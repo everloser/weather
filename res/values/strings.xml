@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Fishing Weather</string>
+    <string name="splashText">Loading...</string>
+</resources>
