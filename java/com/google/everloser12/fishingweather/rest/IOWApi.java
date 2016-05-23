@@ -11,6 +11,6 @@ import retrofit2.http.Query;
  */
 public interface IOWApi {
 
-    @GET("data/2.5/forecast")
-    Call<Root> getWeather(@Query("lat") double lat, @Query("lon") double lon, @Query("APPID") String string);
+    @GET("data/2.5/forecast/daily")
+    Call<Root> getWeather(@Query("lat") double lat, @Query("lon") double lon, @Query("cnt") int cnt, @Query("APPID") String string);
 }

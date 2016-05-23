@@ -79,7 +79,8 @@ public class ServiceBroker {
         IOWApi iowApi = getRetrofit().create(IOWApi.class);
         Log.d("Moi", "create r ");
 
-        Call<Root> call = iowApi.getWeather(weatherRequest.getLat(), weatherRequest.getLon(), Constants.API_KEY);
+        Call<Root> call = iowApi.getWeather(weatherRequest.getLat(), weatherRequest.getLon(),
+                Constants.DAY_CNT, Constants.API_KEY);
         call.enqueue(new Callback<Root>() {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
@@ -88,7 +89,6 @@ public class ServiceBroker {
                 if (response.isSuccessful() && root != null) {
                     //ok
                     Log.d("Moi", "all ok, ");
-                    //saveToken(user.getUserToken(), user.getName());
                     callBack.response(false);
                 } else {
                     //bad

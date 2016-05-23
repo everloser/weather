@@ -9,7 +9,6 @@ public class City {
     private Coord coord;
     private String country;
     private Integer population;
-    private Sys sys;
 
     /**
      * 
@@ -99,24 +98,6 @@ public class City {
      */
     public void setPopulation(Integer population) {
         this.population = population;
-    }
-
-    /**
-     * 
-     * @return
-     *     The sys
-     */
-    public Sys getSys() {
-        return sys;
-    }
-
-    /**
-     * 
-     * @param sys
-     *     The sys
-     */
-    public void setSys(Sys sys) {
-        this.sys = sys;
     }
 
 }
