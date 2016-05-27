@@ -76,5 +76,9 @@
     <string name="pressurechanges">Pressure changes</string>
     <string name="tempchanges">Temperature changes</string>
     <string name="weathercond">Weather condition</string>
+    <string name="addtomy">add to</string>
+    <string name="Empty">Empty</string>
+    <string name="editname">Edit name</string>
+    <string name="myplacedialogtext">Too add your places, use\n\"add to My\" button from Main screen</string>
 
 </resources>

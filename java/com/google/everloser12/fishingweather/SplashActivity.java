@@ -63,7 +63,7 @@ public class SplashActivity extends Activity implements ConnectionCallbacks,
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
-            Log.d("Moi", "mGoogleApiClient builded");
+            //Log.d("Moi", "mGoogleApiClient builded");
         }
 
 
@@ -73,7 +73,7 @@ public class SplashActivity extends Activity implements ConnectionCallbacks,
     @Override
     public void onConnected(Bundle bundle) {
 
-        Log.d("Moi", "onConnected");
+        //Log.d("Moi", "onConnected");
 
 
         new Handler().postDelayed(new Runnable() {
@@ -87,15 +87,15 @@ public class SplashActivity extends Activity implements ConnectionCallbacks,
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                         mGoogleApiClient);
                 if (mLastLocation != null) {
-                    Log.d("Moi", "mLastLocation != null");
+                    //Log.d("Moi", "mLastLocation != null");
                     lat = mLastLocation.getLatitude();
                     lon = mLastLocation.getLongitude();
                 } else {
-                    Log.d("Moi", "mLastLocation = null");
+                    //Log.d("Moi", "mLastLocation = null");
                 }
                 BusProvider.getInstance().post(produceLocation());
                 mGoogleApiClient.disconnect();
-                Log.d("Moi", "mGoogleApiClient.disconnect");
+                //Log.d("Moi", "mGoogleApiClient.disconnect");
 
             }
         }, 1300);
@@ -105,20 +105,21 @@ public class SplashActivity extends Activity implements ConnectionCallbacks,
     @Override
     public void onConnectionSuspended(int i)
     {
-        Log.d("Moi", "onConnectionSuspended");
+
+        //Log.d("Moi", "onConnectionSuspended");
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(this, R.string.connect_warning, Toast.LENGTH_LONG).show();
-        Log.d("Moi", "onConnectionFailed");
+        //Log.d("Moi", "onConnectionFailed");
         BusProvider.getInstance().post(produceLocation());
 
     }
 
     @Override
     protected void onStart() {
-        Log.d("Moi", "onStart");
+        //Log.d("Moi", "onStart");
         mGoogleApiClient.connect();
         BusProvider.getInstance().register(this);
         super.onStart();
@@ -126,7 +127,7 @@ public class SplashActivity extends Activity implements ConnectionCallbacks,
 
     @Override
     protected void onStop() {
-        Log.d("Moi", "onStop");
+        //Log.d("Moi", "onStop");
         if (mGoogleApiClient.isConnected())
         mGoogleApiClient.disconnect();
         BusProvider.getInstance().unregister(this);
@@ -135,7 +136,7 @@ public class SplashActivity extends Activity implements ConnectionCallbacks,
 
     public LocationDataReceived produceLocation() {
 
-        Log.d("Moi", "LocationDataReceived method starts");
+        //Log.d("Moi", "LocationDataReceived method starts");
         if (mLastLocation != null)
         {
                         return new LocationDataReceived(lat, lon);
@@ -203,10 +204,10 @@ public class SplashActivity extends Activity implements ConnectionCallbacks,
         @Override
         protected Void doInBackground(Double... params) {
 
-            Log.d("Moi", "doInBackground");
+            //Log.d("Moi", "doInBackground");
 
             WeatherRequest weatherRequest = new WeatherRequest(params[0], params[1]);
-            Log.d("Moi", "weatherRequest");
+            //Log.d("Moi", "weatherRequest");
 
             ServiceBroker.getInstance().getWeather(weatherRequest, new CallBack() {
                 @Override

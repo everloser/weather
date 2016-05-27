@@ -51,38 +51,38 @@ public class MyFishDialog extends DialogFragment {
         {
             case 1:
             {
-                moon.setText(arr[3]+" / 14");
-                windDir.setText(arr[6]+" / 7");
-                windDelta.setText(arr[9]+" / 7");
-                windSpeed.setText(arr[12]+" / 7");
-                pressure.setText(arr[15]+" / 6");
-                pressChange.setText(arr[18]+" / 14");
-                tempChang.setText(arr[21]+" / 6");
-                condition.setText(arr[24]+" / 7");
+                moon.setText(arr[3]+"  /  14.0");
+                windDir.setText(arr[6]+"  /  7.0");
+                windDelta.setText(arr[9]+"  /  7.0");
+                windSpeed.setText(arr[12]+"  /  7.0");
+                pressure.setText(arr[15]+"  /  6.0");
+                pressChange.setText(arr[18]+"  /  14.0");
+                tempChang.setText(arr[21]+"  /  6.0");
+                condition.setText(arr[24]+"  /  7.0");
                 break;
             }
             case 2:
             {
-                moon.setText(arr[4]+" / 14");
-                windDir.setText(arr[7]+" / 7");
-                windDelta.setText(arr[10]+" / 7");
-                windSpeed.setText(arr[13]+" / 7");
-                pressure.setText(arr[16]+" / 6");
-                pressChange.setText(arr[19]+" / 14");
-                tempChang.setText(arr[22]+" / 6");
-                condition.setText(arr[25]+" / 7");
+                moon.setText(arr[4]+"  /  14.0");
+                windDir.setText(arr[7]+"  /  7.0");
+                windDelta.setText(arr[10]+"  /  7.0");
+                windSpeed.setText(arr[13]+"  /  7.0");
+                pressure.setText(arr[16]+"  /  6.0");
+                pressChange.setText(arr[19]+"  /  14.0");
+                tempChang.setText(arr[22]+"  /  6.0");
+                condition.setText(arr[25]+"  /  7.0");
                 break;
             }
             case 3:
             {
-                moon.setText(arr[5]+" / 14");
-                windDir.setText(arr[8]+" / 7");
-                windDelta.setText(arr[11]+" / 7");
-                windSpeed.setText(arr[14]+" / 7");
-                pressure.setText(arr[17]+" / 6");
-                pressChange.setText(arr[20]+" / 14");
-                tempChang.setText(arr[23]+" / 6");
-                condition.setText(arr[26]+" / 7");
+                moon.setText(arr[5]+"  /  14.0");
+                windDir.setText(arr[8]+"  /  7.0");
+                windDelta.setText(arr[11]+"  /  7.0");
+                windSpeed.setText(arr[14]+"  /  7.0");
+                pressure.setText(arr[17]+"  /  6.0");
+                pressChange.setText(arr[20]+"  /  14.0");
+                tempChang.setText(arr[23]+"  /  6.0");
+                condition.setText(arr[26]+"  /  7.0");
                 break;
             }
         }

@@ -75,9 +75,9 @@ public class ServiceBroker {
         return root;
     }
 
-    public void getWeather(WeatherRequest weatherRequest, final CallBack callBack) {
+    public synchronized void getWeather(WeatherRequest weatherRequest, final CallBack callBack) {
         IOWApi iowApi = getRetrofit().create(IOWApi.class);
-        Log.d("Moi", "create r ");
+        //Log.d("Moi", "create r ");
 
         Call<Root> call = iowApi.getWeather(weatherRequest.getLat(), weatherRequest.getLon(),
                 Constants.DAY_CNT, Constants.API_KEY);
@@ -88,7 +88,7 @@ public class ServiceBroker {
 
                 if (response.isSuccessful() && root != null) {
                     //ok
-                    Log.d("Moi", "all ok, ");
+                    //Log.d("Moi", "all ok, ");
                     callBack.response(false);
                 } else {
                     //bad
@@ -104,7 +104,7 @@ public class ServiceBroker {
             @Override
             public void onFailure(Call<Root> call, Throwable t) {
                 // нет интернета, ошибка в коде
-                Log.d("Moi", "нет интернета, ошибка в коде" + t.getMessage());
+                //Log.d("Moi", "нет интернета, ошибка в коде" + t.getMessage());
                 callBack.response(true);
             }
         });

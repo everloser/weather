@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,7 +29,12 @@ import com.google.everloser12.fishingweather.R;
 import com.google.everloser12.fishingweather.constants.Constants;
 import com.google.everloser12.fishingweather.dialogs.MyDialogs;
 import com.google.everloser12.fishingweather.dialogs.MyFishDialog;
+import com.google.everloser12.fishingweather.dialogs.MyProgressDialog;
 import com.google.everloser12.fishingweather.prework.GoFish;
+import com.google.everloser12.fishingweather.prework.WeatherRequest;
+import com.google.everloser12.fishingweather.prework.WorkWithWeatherData;
+import com.google.everloser12.fishingweather.rest.CallBack;
+import com.google.everloser12.fishingweather.rest.ServiceBroker;
 import com.kd.dynamic.calendar.generator.ImageGenerator;
 
 import java.text.DateFormat;
@@ -36,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.Executor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,15 +55,19 @@ public class FragmentOne extends BaseFragment {
     private static final String KEY_NAME = "key";
     private ActivityListener toolbarListener;
     private TextView local,temp1, temp2, temp3, windday1, windday2, windday3, textId1;
-    private TextView textId2, textId3;
+    private TextView textId2, textId3, addMy;
     private Calendar cal1,cal2,cal3;
     private ImageGenerator mImageGenerator;
     private Bitmap mGeneratedDateIcon1, mGeneratedDateIcon2, mGeneratedDateIcon3;
     private ImageView imageCal1, imageCal2, imageCal3, imageDay1, imageDay2, imageDay3;
-    private String data;
+    private ImageView addButt;
+    private String data, l2, l3, l4;
     private RatingBar bar1, bar2, bar3;
     private CardView cv1, cv2,cv3;
+    Handler mHandler;
+    int check;
     SharedPreferences sharedPreferences;
+    MyProgressDialog progressDialog;
 
 
     public static FragmentOne createInstance(String name)
@@ -232,6 +244,56 @@ public class FragmentOne extends BaseFragment {
         resID = this.getResources().getIdentifier(icn, "drawable", view.getContext().getPackageName());
         imageDay3.setImageResource(resID);
 
+        addButt = (ImageView) view.findViewById(R.id.imageButton);
+        addMy = (TextView) view.findViewById(R.id.addto);
+        final String l1 = sharedPreferences.getString(Constants.SHARED_LOC, null);
+        l2 = sharedPreferences.getString(Constants.SHARED_LOC2, null);
+        l3 = sharedPreferences.getString(Constants.SHARED_LOC3, null);
+        l4 = sharedPreferences.getString(Constants.SHARED_LOC4, null);
+
+        if(!TextUtils.isEmpty(sharedPreferences.getString(Constants.SHARED_DATA2, null))
+                && !TextUtils.isEmpty(sharedPreferences.getString(Constants.SHARED_DATA3, null))
+                && !TextUtils.isEmpty(sharedPreferences.getString(Constants.SHARED_DATA4, null))
+                )
+        {
+            addMy.setVisibility(TextView.GONE);
+            addButt.setVisibility(ImageView.GONE);
+        }
+        else if (!TextUtils.isEmpty(l1) && !TextUtils.isEmpty(l2) && l1.equals(l2)
+                || !TextUtils.isEmpty(l1) && !TextUtils.isEmpty(l3) && l1.equals(l3)
+                || !TextUtils.isEmpty(l1) && !TextUtils.isEmpty(l4) && l1.equals(l4)
+                )
+        {
+            addMy.setVisibility(TextView.GONE);
+            addButt.setVisibility(ImageView.GONE);
+        }
+
+        addButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(sharedPreferences.getString(Constants.SHARED_DATA2, null)))
+                {
+                    sharedPreferences.edit().putString(Constants.SHARED_DATA2, data)
+                            .putString(Constants.SHARED_LOC2, l1)
+                            .apply();
+                }
+                else if (TextUtils.isEmpty(sharedPreferences.getString(Constants.SHARED_DATA3, null)))
+                {
+                    sharedPreferences.edit().putString(Constants.SHARED_DATA3, data)
+                            .putString(Constants.SHARED_LOC3, l1)
+                            .apply();
+                }
+                else if (TextUtils.isEmpty(sharedPreferences.getString(Constants.SHARED_DATA4, null)))
+                {
+                    sharedPreferences.edit().putString(Constants.SHARED_DATA4, data)
+                            .putString(Constants.SHARED_LOC4, l1)
+                            .apply();
+                }
+                addMy.setVisibility(TextView.GONE);
+                addButt.setVisibility(ImageView.GONE);
+            }
+        });
+
 
 //        fbutton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -327,15 +389,144 @@ public class FragmentOne extends BaseFragment {
         {
             case R.id.action_map:
 
-                String loca =  sharedPreferences.getString(Constants.SHARED_LOC, null);
+            {
+                String loca = sharedPreferences.getString(Constants.SHARED_LOC, null);
                 toolbarListener.switchFrafment(MapaFragment.createInstance(getChildFragmentManager(),
                         loca), true, false, FragmentAnim.RIGHT_TO_LEFT);
                 break;
+            }
             case R.id.action_my:
-                toolbarListener.switchFrafment(PlacesFragment.createInstance(getChildFragmentManager(),
-                        "", "", ""), true, false, FragmentAnim.RIGHT_TO_LEFT);
+            {
+                mHandler = new Handler();
+                long time = System.currentTimeMillis();
+                String myTime = sharedPreferences.getString(Constants.SHARED_TIME_MY, null);
+                if (!TextUtils.isEmpty(myTime) && (time - Long.valueOf(myTime)) < 10800000
+                        || TextUtils.isEmpty(l2)&& TextUtils.isEmpty(l3) && TextUtils.isEmpty(l4))
+                {
+                    toolbarListener.switchFrafment(PlacesFragment.createInstance(getChildFragmentManager(),
+                            "", "", ""), true, false, FragmentAnim.RIGHT_TO_LEFT);
+                }
+                else
+                {
+                    check = 0;
+                    progressDialog = new MyProgressDialog(FragmentOne.this.getActivity());
+                    progressDialog.show();
+                    if (TextUtils.isEmpty(l2))
+                        check++;
+                    if (TextUtils.isEmpty(l3))
+                        check++;
+                    if (TextUtils.isEmpty(l4))
+                        check++;
+
+                    if (!TextUtils.isEmpty(l2))
+                    {
+                        String[] l = l2.split("\\|");
+                        double lat = Double.valueOf(l[0]);
+                        double lon = Double.valueOf(l[1]);
+                        new MyWeatherTask3().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,lat, lon, 1.0);
+                    }
+                    if (!TextUtils.isEmpty(l3))
+                    {
+                        String[] l = l3.split("\\|");
+                        double lat = Double.valueOf(l[0]);
+                        double lon = Double.valueOf(l[1]);
+                        new MyWeatherTask3().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,lat, lon, 2.0);
+                    }
+                    if (!TextUtils.isEmpty(l4))
+                    {
+                        String[] l = l4.split("\\|");
+                        double lat = Double.valueOf(l[0]);
+                        double lon = Double.valueOf(l[1]);
+                        new MyWeatherTask3().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,lat, lon, 3.0);
+                    }
+
+                    // // TODO: 26.05.2016 запустить прогресс диалог, обновить данные, закрыть диалог, переключить фрагмент
+
+                }
+
                 break;
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class MyWeatherTask3 extends AsyncTask<Double, Void, Void>
+    {
+
+        @Override
+        protected Void doInBackground(Double... params) {
+            WeatherRequest weatherRequest = new WeatherRequest(params[0], params[1]);
+            double locNumber = params[2];
+            final int locNum = (int)locNumber;
+            ServiceBroker.getInstance().getWeather(weatherRequest, new CallBack() {
+                @Override
+                public void response(boolean isError) {
+
+
+                    if (!isError) {
+
+                        String timeLast = String.valueOf(System.currentTimeMillis());
+                        final String dataF = WorkWithWeatherData.generateWeatherString(ServiceBroker.getInstance().getRoot());
+                        switch (locNum)
+                        {
+                            case 1:
+                            {
+                                sharedPreferences.edit().putString(Constants.SHARED_DATA2, dataF).apply();
+                                break;
+                            }
+                            case 2:
+                            {
+                                sharedPreferences.edit().putString(Constants.SHARED_DATA3, dataF).apply();
+                                break;
+                            }
+                            case 3:
+                            {
+                                sharedPreferences.edit().putString(Constants.SHARED_DATA4, dataF).apply();
+                                break;
+                            }
+                        }
+                        sharedPreferences.edit().putString(Constants.SHARED_TIME_MY, timeLast)
+                                .putString(Constants.SHARED_ERROR, "0")
+                                .apply();
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                check++;
+                                if (check == 3)
+                                {
+                                    progressDialog.dismiss();
+                                    toolbarListener.switchFrafment(PlacesFragment.createInstance(getChildFragmentManager(),
+                                            "", "", ""), true, false, FragmentAnim.RIGHT_TO_LEFT);
+                                }
+
+                            }
+                        });
+
+                        //
+//
+                    } else {
+
+                        sharedPreferences.edit().putString(Constants.SHARED_ERROR, "1").apply();
+
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                check++;
+                                if (check == 3)
+                                {
+                                    progressDialog.dismiss();
+                                    toolbarListener.switchFrafment(PlacesFragment.createInstance(getChildFragmentManager(),
+                                            "", "", ""), true, false, FragmentAnim.RIGHT_TO_LEFT);
+                                }
+                            }
+                        });
+
+
+                    }
+                }
+            });
+
+            return null;
+        }
     }
 }

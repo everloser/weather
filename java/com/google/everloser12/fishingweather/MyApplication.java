@@ -3,6 +3,7 @@ package com.google.everloser12.fishingweather;
 import android.app.Application;
 import android.util.Log;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
 
 /**
@@ -20,8 +21,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("Moi", "MyApplication class onCreate");
+        //Log.d("Moi", "MyApplication class onCreate");
         myApplication = this;
+        Fresco.initialize(this);
         Stetho.initializeWithDefaults(this);
     }
 }

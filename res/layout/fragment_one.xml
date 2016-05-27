@@ -19,12 +19,48 @@
 
 
 
-        <TextView
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/locationtext" />
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/locationtext" />
+
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu_my"
+                android:padding="3dp"
+                android:scaleType="fitEnd"
+                android:background="@drawable/rect"
+                android:id="@+id/imageButton"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addtomy"
+                android:textColor="#ffffff"
+                android:textSize="10dp"
+                android:id="@+id/addto"
+                android:layout_marginLeft="3dp"
+                android:layout_centerVertical="true"
+                android:layout_alignLeft="@+id/imageButton"
+                android:layout_alignStart="@+id/imageButton" />
+
+
+
+        </RelativeLayout>
+
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
