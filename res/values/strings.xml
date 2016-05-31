@@ -64,10 +64,10 @@
     <string name="dialog1data">Internet connection is required\nto load weather data</string>
     <string name="toolbartext">Main</string>
     <string name="toolbartitleplac">My Locations</string>
-    <string name="google_maps_key">AIzaSyCGu3GZlF_W9ddUHHO4tyal_UQPuSVAHpw</string>
+    <string name="google_maps_key" translatable="false">AIzaSyCGu3GZlF_W9ddUHHO4tyal_UQPuSVAHpw</string>
     <string name="toolbartitlemap">Map</string>
     <string name="mapdialog">Long click on map\nto get weather conditions for fishing</string>
-    <string name="splashtextdone">Done</string>
+    <string name="splashtextdone">Done!</string>
     <string name="fishdialogtitle">fishing conditions</string>
     <string name="winddirection">Wind direction</string>
     <string name="windchanges">Wind changes</string>
@@ -80,5 +80,6 @@
     <string name="Empty">Empty</string>
     <string name="editname">Edit name</string>
     <string name="myplacedialogtext">Too add your places, use\n\"add to My\" button from Main screen</string>
+    <string name="moon">Moon</string>
 
 </resources>

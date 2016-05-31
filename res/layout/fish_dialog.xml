@@ -43,7 +43,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:id="@+id/moon"
-            android:text="Moon"/>
+            android:text="@string/moon"/>
 
         <TextView
             android:layout_width="wrap_content"

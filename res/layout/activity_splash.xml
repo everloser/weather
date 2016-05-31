@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:gravity="center"
     android:background="#448aff"
-    tools:context="com.google.everloser12.fishingweather.SplashActivity">
+    tools:context="com.gmail.everloser12.fishingweather.SplashActivity">
 
     <ImageView
         android:layout_width="wrap_content"
